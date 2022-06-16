@@ -3,12 +3,14 @@ services:
   db:
     image: mysql:5.7
     container_name: wp_mysql
-    #restart: always
+    restart: always
     environment:
+      MYSQL_DATABASE: wp_unico # WordPress用データベース名（任意に指定可）
+      MYSQL_USER: unico # WordPress用接続ユーザ名（任意に指定可）
       MYSQL_ROOT_PASSWORD: root # rootユーザのパスワード（任意に指定可）
-      MYSQL_DATABASE: wp_hoge # WordPress用データベース名（任意に指定可）
-      MYSQL_USER: hoge # WordPress用接続ユーザ名（任意に指定可）
       MYSQL_PASSWORD: root # WordPress用パスワード（任意に指定可）
+    volumes:
+      - ./db_data:/var/lib/mysql
 
   wordpress:
     image: wordpress:latest
@@ -20,9 +22,9 @@ services:
      - "10090:80"
     environment:
       WORDPRESS_DB_HOST: db:3306 # データベースサーバ名：ポート番号
-      WORDPRESS_DB_USER: hoge # WordPress用接続ユーザ名(dbの内容に合わせる)
+      WORDPRESS_DB_NAME: wp_unico # WordPress用データベース名(dbの内容に合わせる)
+      WORDPRESS_DB_USER: unico # WordPress用接続ユーザ名(dbの内容に合わせる)
       WORDPRESS_DB_PASSWORD: root # WordPress用パスワード(dbの内容に合わせる)
-      WORDPRESS_DB_NAME: wp_hoge # WordPress用データベース名(dbの内容に合わせる)
       WORDPRESS_DEBUG : 1  #デバッグモードON
     volumes:
        - ./html:/var/www/html
